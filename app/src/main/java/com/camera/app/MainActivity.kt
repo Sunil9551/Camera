@@ -374,7 +374,7 @@ class MainActivity : AppCompatActivity() {
             .coerceIn(zoomState.minZoomRatio, zoomState.maxZoomRatio)
         camera?.cameraControl?.setZoomRatio(newRatio)
     }
-            private fun startCameraForCurrentMode() {
+                private fun startCameraForCurrentMode() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener({
@@ -448,11 +448,9 @@ class MainActivity : AppCompatActivity() {
                     )
                     .build()
 
-                // वीडियो बिल्डर का सेटअप
-                val videoCaptureBuilder = VideoCapture.withOutput(recorder)
-                
-                // फ़िक्स: यहाँ जो .setTargetTargetRotation था, उसे सही करके .setTargetRotation किया गया है
-                videoCaptureBuilder.setTargetRotation(Surface.ROTATION_90)
+                // फ़िक्स: सही बिल्डर सिंटैक्स ताकि Extender और .build() बिना किसी Type Mismatch एरर के काम करें
+                val videoCaptureBuilder = VideoCapture.Builder(recorder)
+                    .setTargetRotation(Surface.ROTATION_90)
 
                 // Camera2Interop: Video mode के लिए सख्त FPS और Full FOV सेटिंग इंजेक्ट करना
                 val videoExtender = Camera2Interop.Extender(videoCaptureBuilder)
@@ -467,7 +465,6 @@ class MainActivity : AppCompatActivity() {
                     videoExtender.setCaptureRequestOption(CaptureRequest.SCALER_CROP_REGION, activeArraySize)
                 }
 
-                // फ़िक्स: अब यह सही वेरिएबल से .build() होकर वीडियोकैप्चर ऑब्जेक्ट असाइन करेगा
                 videoCapture = videoCaptureBuilder.build()
                 useCaseGroupBuilder.addUseCase(preview).addUseCase(videoCapture!!)
             }
