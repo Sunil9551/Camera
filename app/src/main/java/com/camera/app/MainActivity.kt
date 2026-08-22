@@ -538,7 +538,7 @@ class MainActivity : AppCompatActivity() {
             // ViewPort: dono mode me 4:3, full FOV (crop nahi, sensor jitna 4:3 me aata hai utna)
             val viewPort =
                 ViewPort.Builder(ASPECT_4_3, Surface.ROTATION_0)
-                    .setScaleType(ViewPort.FIT_CENTER)
+                    .setScaleType(ViewPort.FIT)
                     .build()
 
             val useCaseGroupBuilder = UseCaseGroup.Builder().setViewPort(viewPort)
