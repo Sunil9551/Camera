@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launcher_white">#FFFFFF</color>
+
+    <!-- Top app bar gradient: left #00CEC8 -> right #ADF2E7 -->
+    <color name="topbar_gradient_start">#00CEC8</color>
+    <color name="topbar_gradient_end">#ADF2E7</color>
+
+    <color name="icon_button_bg">#F0F0F0</color>
+</resources>
