@@ -374,7 +374,7 @@ class MainActivity : AppCompatActivity() {
             .coerceIn(zoomState.minZoomRatio, zoomState.maxZoomRatio)
         camera?.cameraControl?.setZoomRatio(newRatio)
     }
-    private fun startCameraForCurrentMode() {
+        private fun startCameraForCurrentMode() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener({
@@ -426,16 +426,17 @@ class MainActivity : AppCompatActivity() {
 
                 // Camera2Interop: Photo mode के लिए सेंसर का पूरा हिस्सा (Full FOV) लॉक
                 val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
-                val targetId = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) "1" else "0"
+                val targetId = if (cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA) "1" else "0"
                 val characteristics = cameraManager.getCameraCharacteristics(targetId)
                 val activeArraySize = characteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE)
 
+                // फिक्स: एक्सटेंडर को अलग से सेट करके बिल्डर से ही .build() कॉल करना होगा
                 val imageExtender = Camera2Interop.Extender(imageCaptureBuilder)
                 if (activeArraySize != null) {
                     imageExtender.setCaptureRequestOption(CaptureRequest.SCALER_CROP_REGION, activeArraySize)
                 }
 
-                imageCapture = imageExtender.build()
+                imageCapture = imageCaptureBuilder.build()
                 useCaseGroupBuilder.addUseCase(preview).addUseCase(imageCapture!!)
 
             } else {
@@ -457,7 +458,7 @@ class MainActivity : AppCompatActivity() {
                 videoExtender.setCaptureRequestOption(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, recordingFps)
 
                 val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
-                val targetId = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) "1" else "0"
+                val targetId = if (cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA) "1" else "0"
                 val characteristics = cameraManager.getCameraCharacteristics(targetId)
                 val activeArraySize = characteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE)
 
@@ -507,3 +508,4 @@ class MainActivity : AppCompatActivity() {
         ).toTypedArray()
     }
 }
+
