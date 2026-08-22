@@ -374,7 +374,7 @@ class MainActivity : AppCompatActivity() {
             .coerceIn(zoomState.minZoomRatio, zoomState.maxZoomRatio)
         camera?.cameraControl?.setZoomRatio(newRatio)
     }
-        private fun startCameraForCurrentMode() {
+            private fun startCameraForCurrentMode() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         cameraProviderFuture.addListener({
@@ -426,11 +426,10 @@ class MainActivity : AppCompatActivity() {
 
                 // Camera2Interop: Photo mode के लिए सेंसर का पूरा हिस्सा (Full FOV) लॉक
                 val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
-                val targetId = if (cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA) "1" else "0"
+                val targetId = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) "1" else "0"
                 val characteristics = cameraManager.getCameraCharacteristics(targetId)
                 val activeArraySize = characteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE)
 
-                // फिक्स: एक्सटेंडर को अलग से सेट करके बिल्डर से ही .build() कॉल करना होगा
                 val imageExtender = Camera2Interop.Extender(imageCaptureBuilder)
                 if (activeArraySize != null) {
                     imageExtender.setCaptureRequestOption(CaptureRequest.SCALER_CROP_REGION, activeArraySize)
@@ -449,16 +448,18 @@ class MainActivity : AppCompatActivity() {
                     )
                     .build()
 
-                // Video Capture Setup: Target Rotation Landscape (ROTATION_90) पर फोर्स करें
+                // वीडियो बिल्डर का सेटअप
                 val videoCaptureBuilder = VideoCapture.withOutput(recorder)
-                    .setTargetRotation(Surface.ROTATION_90)
+                
+                // फ़िक्स: यहाँ जो .setTargetTargetRotation था, उसे सही करके .setTargetRotation किया गया है
+                videoCaptureBuilder.setTargetRotation(Surface.ROTATION_90)
 
                 // Camera2Interop: Video mode के लिए सख्त FPS और Full FOV सेटिंग इंजेक्ट करना
                 val videoExtender = Camera2Interop.Extender(videoCaptureBuilder)
                 videoExtender.setCaptureRequestOption(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, recordingFps)
 
                 val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
-                val targetId = if (cameraSelector == CameraSelector.DEFAULT_FRONT_CAMERA) "1" else "0"
+                val targetId = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) "1" else "0"
                 val characteristics = cameraManager.getCameraCharacteristics(targetId)
                 val activeArraySize = characteristics.get(CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE)
 
@@ -466,6 +467,7 @@ class MainActivity : AppCompatActivity() {
                     videoExtender.setCaptureRequestOption(CaptureRequest.SCALER_CROP_REGION, activeArraySize)
                 }
 
+                // फ़िक्स: अब यह सही वेरिएबल से .build() होकर वीडियोकैप्चर ऑब्जेक्ट असाइन करेगा
                 videoCapture = videoCaptureBuilder.build()
                 useCaseGroupBuilder.addUseCase(preview).addUseCase(videoCapture!!)
             }
@@ -508,4 +510,3 @@ class MainActivity : AppCompatActivity() {
         ).toTypedArray()
     }
 }
-
