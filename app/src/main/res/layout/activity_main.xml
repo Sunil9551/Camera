@@ -70,21 +70,18 @@
 
         <!-- ===== VIEWFINDER : hamesha 4:3, dono mode me full FOV ===== -->
         <androidx.camera.view.PreviewView
-    android:id="@+id/viewFinder"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginTop="8dp"
-    android:rotation="270"
-    app:scaleType="fitCenter"
-    app:layout_constraintDimensionRatio="3:4"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btnSettings"
-    app:layout_constraintBottom_toTopOf="@+id/modeToggleContainer" />
-
-
+            android:id="@+id/viewFinder"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            app:scaleType="fitCenter"
+            app:layout_constraintDimensionRatio="4:3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnSettings"
+            app:layout_constraintBottom_toTopOf="@+id/modeToggleContainer" />
 
         <!-- ===== MODE TOGGLE : Camera / Video, viewfinder ke theek neeche ===== -->
         <LinearLayout
