@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <LinearLayout
+            android:id="@+id/settingsTopBar"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@drawable/top_bar_gradient"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="4dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_menu_revert"
+                android:contentDescription="Back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Settings"
+                android:textColor="#000000"
+                android:textSize="33sp"
+                android:maxLines="1"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="16sp"
+                android:autoSizeMaxTextSize="33sp"
+                android:fontFamily="@font/delicatusmedium" />
+
+        </LinearLayout>
+
+        <!-- ===== VIDEO : Frame rate (Resolution ab manual nahi, hamesha auto-max) ===== -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="28dp"
+            android:text="Frame rate (Video)"
+            android:textColor="#757575"
+            android:textSize="13sp"
+            android:id="@+id/tvFpsLabel"
+            app:layout_constraintTop_toBottomOf="@+id/settingsTopBar"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btnFps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="6dp"
+            android:text="30 FPS"
+            app:layout_constraintTop_toBottomOf="@+id/tvFpsLabel"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- ===== PHOTO : High Resolution ===== -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:text="High Resolution (Camera mode)"
+            android:textColor="#757575"
+            android:textSize="13sp"
+            android:id="@+id/tvHighResLabel"
+            app:layout_constraintTop_toBottomOf="@+id/btnFps"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btnHighRes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="6dp"
+            android:text="OFF"
+            app:layout_constraintTop_toBottomOf="@+id/tvHighResLabel"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
