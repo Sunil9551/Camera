@@ -521,8 +521,8 @@ class MainActivity : AppCompatActivity() {
                         ResolutionSelector.Builder()
                             .setResolutionStrategy(
                                 ResolutionStrategy(
-                                    Size(1920, 1440),
-                                    ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER
+                                    Size(2560, 1920),
+ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER
                                 )
                             )
                             .build()
@@ -559,12 +559,14 @@ class MainActivity : AppCompatActivity() {
 
                 // High Resolution ON -> device ka max supported 4:3 landscape size
                 // High Resolution OFF -> ~8MP 4:3 landscape
+                // Device ka confirmed max hai 3264x2448 (8MP, LEGACY hardware level) —
+                // High Res ON/OFF dono ab isi asli max ko target karte hain.
                 val photoResolutionSelector =
                     if (isHighResPhoto) {
                         ResolutionSelector.Builder()
                             .setResolutionStrategy(
                                 ResolutionStrategy(
-                                    Size(8000, 6000),
+                                    Size(3264, 2448),
                                     ResolutionStrategy.FALLBACK_RULE_CLOSEST_LOWER_THEN_HIGHER
                                 )
                             )
@@ -574,7 +576,7 @@ class MainActivity : AppCompatActivity() {
                             .setResolutionStrategy(
                                 ResolutionStrategy(
                                     Size(3264, 2448),
-                                    ResolutionStrategy.FALLBACK_RULE_CLOSEST_HIGHER_THEN_LOWER
+                                    ResolutionStrategy.FALLBACK_RULE_CLOSEST_LOWER_THEN_HIGHER
                                 )
                             )
                             .build()
