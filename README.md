@@ -1,4 +1,4 @@
-📷 Camera43
+📷 Camera
 
 <a href="https://github.com">
   <img src="https://shields.io" alt="Download APK" />
