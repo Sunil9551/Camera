@@ -19,7 +19,7 @@
 
 Modern smartphone cameras have made 16:9, 19.5:9, 20:9 and other wide formats the default for video. On paper, wider looks modern. But wider isn't always better.
 
-Camera Camera43 is built for people who understand the aesthetic of 4:3.
+Camera app is built for people who understand the aesthetic of 4:3.
 
 The project is designed around the camera sensor's natural 4:3 shape — giving photos and videos a frame that feels more balanced, natural and intentional.
 
