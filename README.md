@@ -78,7 +78,7 @@ Resolution, frame rate, codec support, flash capability, zoom limits and other c
 
 Android devices don't all expose the same camera capabilities.
 
-Camera43 therefore tries to work with what the phone actually provides.
+Camera therefore tries to work with what the phone actually provides.
 
 If a particular resolution or configuration isn't supported, the app can fall back to another compatible option rather than assuming every phone has identical camera hardware.
 
@@ -110,7 +110,7 @@ Smartphone cameras often have sensors with a more natural 4:3 geometry, yet many
 
 That can mean giving up part of the sensor's natural image area simply to fit a wider presentation.
 
-Camera43 takes the opposite approach.
+Camera takes the opposite approach.
 
 Instead of asking:
 
@@ -223,7 +223,7 @@ See "LICENSE" for the complete license text.
 
 📇 Project
 
-Camera Camera43
+Camera
 
 A small Android camera project built around one simple idea:
 
