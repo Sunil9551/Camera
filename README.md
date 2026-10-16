@@ -232,3 +232,8 @@ We don't always need to cut it into a wider box.»
 
 4:3 isn't outdated.
 It's an aesthetic.
+
+## License
+Copyright 2026 Sunil Kumar.
+Licensed under the Apache License, Version 2.0.
+
