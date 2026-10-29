@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Start sound: recording begins only after it has finished playing, so it is never recorded.
     // Time from the tap until recording may begin. Raise it if the start sound is still audible.
-    private static final long START_SOUND_GUARD_MS = 800L;
+    private static final long START_SOUND_GUARD_MS = 1000L;
     private long startSoundPlayedAtMs = 0L;
     private boolean startingRecording = false;
     private final Runnable startRecorderRunnable = this::startRecorderNow;
