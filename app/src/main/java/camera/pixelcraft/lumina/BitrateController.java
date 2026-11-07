@@ -19,23 +19,32 @@ package camera.pixelcraft.lumina;
 /**
  * Keeps the AVERAGE video bitrate under a limit even when the phone's encoder is sloppy.
  *
- * Phone encoders treat the bitrate we ask for as a hint: busy scenes can come out at twice the
- * asked value, calm ones at half. This class watches how many bytes really come out and moves
- * the asked bitrate up or down until the real numbers match the limit.
+ * Phone encoders treat the bitrate we ask for as a hint: busy scenes can come out well above it.
+ * Two things are done about that:
+ *
+ * 1) Start low, climb. The encoder is first asked for only a part of the limit. That is safe by
+ *    itself: even an encoder that ignores every later change and overshoots by 1.5x stays under.
+ * 2) Closed loop. Every second the bytes that really came out are measured. If they are above the
+ *    aim, the asked bitrate goes down; if they are below, it goes back up (never above the limit).
  *
  * Plain Java (no Android classes) so it can be tested on a normal computer.
  */
-final class BitrateGovernor {
+final class BitrateController {
 
     private static final long WINDOW_US = 2_000_000L;
     private static final long CHECK_EVERY_US = 1_000_000L;
     private static final long WARMUP_US = 1_000_000L;
-    private static final double MIN_STEP = 0.75;   // never cut more than 25% in one go
-    private static final double MAX_STEP = 1.10;   // and raise by 10% at most
+
+    private static final double START_FRACTION = 0.65;   // first request = 65% of the limit
+    private static final double AIM_FRACTION = 0.95;     // aim 5% under the limit (sound, file overhead)
+    private static final double MIN_STEP = 0.75;         // never cut more than 25% in one go
+    private static final double MAX_STEP = 1.10;         // and raise by 10% at most
 
     private final int target;
     private final int floor;
     private int request;
+    private int lowestRequest;
+    private int highestRequest;
 
     // history of (time, bytes so far): a ring buffer, nothing is allocated per frame
     private static final int RING = 512;
@@ -48,10 +57,12 @@ final class BitrateGovernor {
     private long lastCheckUs;
     private double peakBps;
 
-    BitrateGovernor(int targetBps) {
+    BitrateController(int targetBps) {
         this.target = targetBps;
         this.floor = Math.max(300_000, targetBps / 4);
-        this.request = targetBps;
+        this.request = Math.max(floor, (int) Math.round(targetBps * START_FRACTION));
+        this.lowestRequest = request;
+        this.highestRequest = request;
         add(0, 0);
     }
 
@@ -66,8 +77,17 @@ final class BitrateGovernor {
         ringSize++;
     }
 
+    /** The bitrate the encoder should be configured with. */
     int currentRequest() {
         return request;
+    }
+
+    int lowestRequest() {
+        return lowestRequest;
+    }
+
+    int highestRequest() {
+        return highestRequest;
     }
 
     double averageBps(long nowUs) {
@@ -107,10 +127,11 @@ final class BitrateGovernor {
         double windowBps = (totalBytes - ringBytes[ringHead]) * 8_000_000.0 / span;
         if (windowBps > peakBps) peakBps = windowBps;
 
-        // If the file so far is over the limit, aim lower for a while to pay it back.
+        // If the file so far is over the aim, aim lower for a while to pay it back.
+        double aimBase = target * AIM_FRACTION;
         double average = averageBps(ptsUs);
-        double debt = Math.max(0, (average - target) / target);
-        double aim = target * (1.0 - Math.min(0.5, debt));
+        double debt = Math.max(0, (average - aimBase) / aimBase);
+        double aim = aimBase * (1.0 - Math.min(0.5, debt));
 
         double ratio = aim / Math.max(windowBps, 1.0);
         ratio = Math.max(MIN_STEP, Math.min(MAX_STEP, ratio));
@@ -120,6 +141,8 @@ final class BitrateGovernor {
 
         if (Math.abs(next - request) < request * 0.02) return -1;
         request = next;
+        lowestRequest = Math.min(lowestRequest, next);
+        highestRequest = Math.max(highestRequest, next);
         return next;
     }
 }
