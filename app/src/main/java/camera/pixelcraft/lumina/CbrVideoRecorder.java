@@ -141,7 +141,7 @@ public final class CbrVideoRecorder {
         this.videoBitrate = videoBitrate;
         this.orientationHint = ((orientationHint % 360) + 360) % 360;
         this.withAudio = withAudio;
-        this.governor = new BitrateGovernor(videoBitrate);
+        this.controller = new BitrateController(videoBitrate);
     }
 
     // ---------------------------------------------------------------------------------
@@ -237,8 +237,8 @@ public final class CbrVideoRecorder {
             throw new IOException("No usable video encoder");
         }
 
-        Log.i(TAG, "Video encoder " + codec.getName() + ": " + (cbr ? "CBR" : "VBR + governor")
-                + ", start " + governor.currentRequest() + " bps, limit " + videoBitrate + " bps");
+        Log.i(TAG, "Video encoder " + codec.getName() + ": " + (cbr ? "CBR" : "VBR + controller")
+                + ", start " + controller.currentRequest() + " bps, limit " + videoBitrate + " bps");
         cbrActive = cbr;
         encoderName = codec.getName();
 
@@ -253,7 +253,7 @@ public final class CbrVideoRecorder {
                 MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface
         );
         // Starts below the limit and climbs (see BitrateGovernor).
-        format.setInteger(MediaFormat.KEY_BIT_RATE, governor.currentRequest());
+        format.setInteger(MediaFormat.KEY_BIT_RATE, controller.currentRequest());
         format.setInteger(MediaFormat.KEY_FRAME_RATE, frameRate);
         // A key frame costs several times more than a normal one; fewer of them = fewer bursts.
         format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 2);
@@ -707,13 +707,13 @@ public final class CbrVideoRecorder {
                             videoSamples++;
 
                             // Measure what the encoder really produces and correct it.
-                            int next = governor.onFrame(ptsUs, size);
+                            int next = controller.onFrame(ptsUs, size);
                             if (next > 0) {
                                 setEncoderBitrate(next);
                             }
-                            statBytes = governor.totalBytes();
+                            statBytes = controller.totalBytes();
                             statDurationUs = ptsUs;
-                            statPeakBps = governor.peakBps();
+                            statPeakBps = controller.peakBps();
                         }
                     }
                 }
@@ -760,8 +760,8 @@ public final class CbrVideoRecorder {
                 mbPerMinute,
                 totalBps / 1e6,
                 (statPeakBps + audioBps) / 1e6,
-                governor.lowestRequest() / 1e6,
-                governor.highestRequest() / 1e6);
+                controller.lowestRequest() / 1e6,
+                controller.highestRequest() / 1e6);
         Log.i(TAG, text.replace('\n', ' '));
         return text;
     }
