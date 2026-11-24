@@ -50,13 +50,13 @@ public final class CameraCapabilities {
     private static final int MAX_WIDTH = 2880;
 
     // Preview does not need more.
-    private static final int MAX_PREVIEW_WIDTH = 1440;
+    private static final int MAX_PREVIEW_WIDTH = 1600;
 
     private static final float MAX_ZOOM = 4.0f;
 
     // Bitrate formula (video only):
     // width × height × fps × 0.135
-    private static final float BITS_PER_PIXEL = 0.135f;
+    private static final float BITS_PER_PIXEL = 0.11f;
 
     /** Audio (AAC) bitrate used by CbrVideoRecorder. It is counted inside the caps below. */
     public static final int AUDIO_BITRATE = 128_000;
