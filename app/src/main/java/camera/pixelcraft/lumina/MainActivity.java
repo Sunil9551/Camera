@@ -51,7 +51,8 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.net.Uri;
 import android.util.Size;
-import android.view.MotionEvent;\nimport android.view.ScaleGestureDetector;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.TextureView;
@@ -180,7 +181,9 @@ public class MainActivity extends AppCompatActivity {
 
     private final Handler zoomHandler = new Handler(Looper.getMainLooper());
     private float zoomRatio = 1.0f;
-    private float maxZoomRatio = 1.0f;\n    private ScaleGestureDetector scaleGestureDetector;\n    private boolean isScaling = false;
+    private float maxZoomRatio = 1.0f;
+    private ScaleGestureDetector scaleGestureDetector;
+    private boolean isScaling = false;
 
     private final TextureView.SurfaceTextureListener surfaceTextureListener = new TextureView.SurfaceTextureListener() {
         @Override
