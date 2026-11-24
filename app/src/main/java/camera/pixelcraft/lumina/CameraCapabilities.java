@@ -55,14 +55,14 @@ public final class CameraCapabilities {
     private static final float MAX_ZOOM = 4.0f;
 
     // Bitrate formula (video only):
-    // width × height × fps × 0.135
-    private static final float BITS_PER_PIXEL = 0.11f;
+    // width × height × fps × 0.13
+    private static final float BITS_PER_PIXEL = 0.13f;
 
     /** Audio (AAC) bitrate used by CbrVideoRecorder. It is counted inside the caps below. */
     public static final int AUDIO_BITRATE = 128_000;
 
     // Hard caps for audio + video TOGETHER:
-    //   up to 1600×1200 -> 8 Mbps   (2 minutes ≈ 118 MB)
+    //   up to 1600×1200 -> 8 Mbps   (1 minutes ≈ 60 MB)
     //   2880×2160       -> 24 Mbps
     // Sizes in between get a cap in between.
     private static final long CAP_LOW_PIXELS = 1600L * 1200L;
