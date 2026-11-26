@@ -52,7 +52,7 @@ public final class CameraCapabilities {
     // Preview does not need more.
     private static final int MAX_PREVIEW_WIDTH = 1600;
 
-    private static final float MAX_ZOOM = 4.0f;
+    private static final float MAX_ZOOM = Float.MAX_VALUE;
 
     // Bitrate formula (video only):
     // width × height × fps × 0.13
